@@ -14,30 +14,4 @@ export const request = async (path, params = {}) => {
 
 export const getSuite = async (suiteId) => request(`/suites/${suiteId}/`)
 export const getSuiteTests = async (suiteId) => request(`/suites/${suiteId}/tests/`)
-
-  // executeSuite (suiteId, options, callback) {
-  //   // Sort out options and callback
-  //   if (typeof options === 'function') {
-  //     callback = options
-  //     options = {}
-  //   }
-  //   // Execute API call
-  //   this.request(`/suites/${suiteId}/execute/`, options, (err, data) => {
-  //     let passing
-  //     if (err) {
-  //       if (typeof callback === 'function') { callback(err) }
-  //       return
-  //     }
-  //     // Check test results, determine overall pass/fail
-  //     if (data instanceof Array) {
-  //       passing = true
-  //       for (let test of data) {
-  //         passing = passing && test.passing
-  //       }
-  //     } else {
-  //       passing = null
-  //     }
-  //     // Call back with extra pass/fail parameter
-  //     if (typeof callback === 'function') { callback(null, data, passing) }
-  //   })
-  // }
+export const executeSuite = async (suiteId) => request(`/suites/${suiteId}/execute`)
