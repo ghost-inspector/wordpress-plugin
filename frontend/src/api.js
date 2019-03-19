@@ -1,9 +1,12 @@
 
 export const request = async (path, params = {}) => {
-  // hardcoded API key (will be added on backend proxy in the future)
-  params.apiKey = '767f9ef8707eef19d823b0f05c2a66e1b0949f0d'
-  const url = `https://api.ghostinspectortest.com/v1${path}?${new URLSearchParams(Object.entries(params))}`  
-  const response = await fetch(url)
+  const { nonce, ajax_url } = window.gi_ajax
+  const response = await fetch(`${ajax_url}?${new URLSearchParams(Object.entries({
+    ...params,
+    _ajax_nonce: nonce,
+    action: 'gi_api_proxy',
+    url: `https://api.ghostinspectortest.com/v1${path}`
+  }))}`)
   const json = await response.json()
   if (json.code === 'SUCCESS') {
     return json.data
@@ -12,6 +15,6 @@ export const request = async (path, params = {}) => {
   }
 }
 
-export const getSuite = async (suiteId) => request(`/suites/${suiteId}/`)
-export const getSuiteTests = async (suiteId) => request(`/suites/${suiteId}/tests/`)
-export const executeSuite = async (suiteId) => request(`/suites/${suiteId}/execute`)
+export const getSuite = async () => request(`/suites/${window.gi_ajax.suiteId}/`)
+export const getSuiteTests = async () => request(`/suites/${window.gi_ajax.suiteId}/tests/`)
+export const executeSuite = async () => request(`/suites/${window.gi_ajax.suiteId}/execute`)

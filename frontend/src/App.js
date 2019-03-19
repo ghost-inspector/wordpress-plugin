@@ -3,23 +3,22 @@ import format from 'date-fns/format';
 import { getSuite, getSuiteTests, executeSuite } from './api';
 
 const baseUrl = 'https://app.ghostinspectortest.com' // TODO: move to env variables
-const suiteId = '5be210847a05a37dcf89fc43' // TODO: get from widget PHP (WP settings)
 
 const App = () => {
   const [tests, setTests] = useState([])
   const [suite, setSuite] = useState({})
   const [isSuiteRunning, setSuiteRunning] = useState(false)
   const fetchTests = async () => {
-    const tests = await getSuiteTests(suiteId)
+    const tests = await getSuiteTests()
     setTests(tests)
   }
   const fetchSuite = async () => {
-    const suite = await getSuite(suiteId)
+    const suite = await getSuite()
     setSuite(suite)
   }
   const triggerExecuteSuite = async () => {
     setSuiteRunning(true)
-    const suiteExecution = await executeSuite(suiteId)
+    const suiteExecution = await executeSuite()
     setSuiteRunning(false)
     return suiteExecution
   }

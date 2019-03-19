@@ -14,16 +14,30 @@ if (!in_array($_SERVER['REMOTE_ADDR'], array('10.255.0.2', '::1'))) {
 } else {
   $react_js_to_load = 'http://localhost:3000/static/js/bundle.js';
 }
-// DEV
-// React dynamic loading
+// DEV React dynamic loading
 wp_enqueue_script('ghost_inspector_react', $react_js_to_load, '', mt_rand(10,1000), true);
-// wp_enqueue_script('ghost_inspector_chunk_0', $js_chunk0_to_load, '', mt_rand(10,1000), true);
-// wp_enqueue_script('ghost_inspector_chunk_main', $js_main_chunk_to_load, '', mt_rand(10,1000), true);
+
+add_action('wp_ajax_gi_api_proxy', 'gi_api_proxy' );
+function gi_api_proxy() {
+    // Handle the ajax request
+    check_ajax_referer('gi_api_proxy');
+    $gi_api_key = '767f9ef8707eef19d823b0f05c2a66e1b0949f0d'; // TODO: get from WP plugin settings
+    $response = wp_remote_get(esc_url_raw($_GET['url']) . '?apiKey=' . $gi_api_key);
+    wp_send_json(json_decode(wp_remote_retrieve_body($response), true));
+    wp_die(); // All ajax handlers die when finished
+}
 
 add_action('wp_dashboard_setup', 'gi_add_widget');
   
 function gi_add_widget() {
   global $wp_meta_boxes;
+  $gi_suite_id = '5be210847a05a37dcf89fc43'; // TODO: get from WP plugin settings
+  $gi_title_nonce = wp_create_nonce('gi_api_proxy');
+  wp_localize_script('ghost_inspector_react', 'gi_ajax', array(
+    'ajax_url' => admin_url('admin-ajax.php'),
+    'nonce'    => $gi_title_nonce,
+    'suiteId'  => $gi_suite_id,
+  ));
   wp_add_dashboard_widget('ghost_inspector_widget', 'Ghost Inspector', 'gi_display_widget');
 }
  
