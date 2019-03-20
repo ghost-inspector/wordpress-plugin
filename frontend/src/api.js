@@ -15,7 +15,7 @@ export const request = async (path, params = {}) => {
   }
 }
 
-export const getSuite = async () => request(`/suites/${window.gi_ajax.suiteId}/`)
-export const getSuiteTests = async () => request(`/suites/${window.gi_ajax.suiteId}/tests/`)
-export const executeSuite = async () => request(`/suites/${window.gi_ajax.suiteId}/execute`, { immediate: 1 })
+export const getSuite = async (suiteId) => request(`/suites/${suiteId}/`)
+export const getSuiteTests = async (suiteId) => request(`/suites/${suiteId}/tests/`)
+export const executeSuite = async (suiteId) => request(`/suites/${suiteId}/execute`, { immediate: 1 })
 export const getSuiteResults = async (suiteResultId) => request(`/suite-results/${suiteResultId}/results/`)

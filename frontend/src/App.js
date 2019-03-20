@@ -1,24 +1,25 @@
 import React, { useEffect, useState }  from 'react';
 import format from 'date-fns/format';
 import { getSuite, getSuiteResults, getSuiteTests, executeSuite } from './api';
+import './App.css'
 
 const baseUrl = 'https://app.ghostinspectortest.com' // TODO: move to env variables
 
-const App = () => {
+const App = ({ suiteId }) => {
   const [tests, setTests] = useState([])
   const [suite, setSuite] = useState({})
   const [isSuiteRunning, setSuiteRunning] = useState(false)
   const fetchTests = async () => {
-    const tests = await getSuiteTests()
+    const tests = await getSuiteTests(suiteId)
     setTests(tests)
   }
   const fetchSuite = async () => {
-    const suite = await getSuite()
+    const suite = await getSuite(suiteId)
     setSuite(suite)
   }
   const triggerExecuteSuite = async () => {
     setSuiteRunning(true)
-    const suite = await executeSuite()
+    const suite = await executeSuite(suiteId)
     const suiteResults = await getSuiteResults(suite._id)
     setSuiteRunning(false)
     return suiteResults
@@ -32,16 +33,16 @@ const App = () => {
   const total = tests.length
   const totalPassing = tests.filter(test => test.passing === true).length
   return (
-    <div className="community-events">
-      <p>Latest Test Results for Suite {suite.name} ({totalPassing}/{total} passing)</p>
-      <ul>
+    <div className="ghost_inspector_wrapper">
+      <p className="ghost_inspector_header">Latest Test Results for Suite <a href={`${baseUrl}/suites/${suiteId}`} className="ghost_inspector_suite_name">{suite.name}</a> ({totalPassing}/{total} passing)</p>
+      <ul className="ghost_inspector_tests">
         {tests.map(test => (
           <li key={test._id}>
-            <a href={`${baseUrl}/tests/${test._id}`}>{test.name}</a> | {test.passing ? 'passing' : 'failing'} | Completed on {format(new Date(test.dateExecutionFinished), 'MMM D, YYYY @ h:mm:ss A')}
+            <a href={`${baseUrl}/tests/${test._id}`}>{test.name}</a> <span className={`ghost_inspector_${test.passing ? 'passing' : 'failing'}`}>{test.passing ? 'passed' : 'failed'}</span> on {format(new Date(test.dateExecutionFinished), 'MMM D, YYYY @ h:mm:ss A')}
           </li>
         ))}
       </ul>
-      <p><button type="button" onClick={triggerExecuteSuite} disabled={isSuiteRunning}>Run Test Suite</button></p>
+      <p><button type="button" className="button button-primary" onClick={triggerExecuteSuite} disabled={isSuiteRunning}>Run Test Suite</button></p>
     </div>
   );
 }

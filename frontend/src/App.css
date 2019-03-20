@@ -1,33 +1,28 @@
-.App {
-  text-align: center;
+.ghost_inspector_wrapper a {
+  font-weight: 500;
+  padding-bottom: 1px;
+  border-bottom: 1px dotted #8aa7c0;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.ghost_inspector_passing {
+  color: #62bf67
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.ghost_inspector_failing {
+  color: #de6764;
 }
 
-.App-link {
-  color: #61dafb;
+.postbox .inside .ghost_inspector_tests {
+  margin-left: -11px;
+  margin-right: -11px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.ghost_inspector_tests li {
+  border-top: 1px solid #ddd;
+  padding: 6px 11px;
+  margin: 0;
+}
+
+.ghost_inspector_tests li:nth-of-type(odd) {
+  background-color: #f9f9f9;
 }

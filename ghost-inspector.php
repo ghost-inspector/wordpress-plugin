@@ -47,7 +47,6 @@ function gi_api_proxy() {
 }
 
 function gi_add_widget() {
-  // global $wp_meta_boxes;
   wp_add_dashboard_widget('ghost_inspector_widget', 'Ghost Inspector', 'gi_display_widget');
 }
 
