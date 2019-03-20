@@ -21,8 +21,14 @@ add_action('wp_ajax_gi_api_proxy', 'gi_api_proxy' );
 function gi_api_proxy() {
     // Handle the ajax request
     check_ajax_referer('gi_api_proxy');
-    $gi_api_key = '767f9ef8707eef19d823b0f05c2a66e1b0949f0d'; // TODO: get from WP plugin settings
-    $response = wp_remote_get(esc_url_raw($_GET['url']) . '?apiKey=' . $gi_api_key);
+    $gi_params = $_GET;
+    $gi_params['apiKey'] = '767f9ef8707eef19d823b0f05c2a66e1b0949f0d'; // TODO: get from WP plugin settings
+    $gi_api_url = $gi_params['url'];
+    // remove WP specific query params before sending request to GI API
+    unset($gi_params['_ajax_nonce']);
+    unset($gi_params['action']);
+    unset($gi_params['url']);
+    $response = wp_remote_get(esc_url_raw($gi_api_url) . '?' . http_build_query($gi_params));
     wp_send_json(json_decode(wp_remote_retrieve_body($response), true));
     wp_die(); // All ajax handlers die when finished
 }

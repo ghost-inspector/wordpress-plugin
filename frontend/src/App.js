@@ -1,6 +1,6 @@
 import React, { useEffect, useState }  from 'react';
 import format from 'date-fns/format';
-import { getSuite, getSuiteTests, executeSuite } from './api';
+import { getSuite, getSuiteResults, getSuiteTests, executeSuite } from './api';
 
 const baseUrl = 'https://app.ghostinspectortest.com' // TODO: move to env variables
 
@@ -18,9 +18,10 @@ const App = () => {
   }
   const triggerExecuteSuite = async () => {
     setSuiteRunning(true)
-    const suiteExecution = await executeSuite()
+    const suite = await executeSuite()
+    const suiteResults = await getSuiteResults(suite._id)
     setSuiteRunning(false)
-    return suiteExecution
+    return suiteResults
   }
   useEffect(() => {
     setTimeout(() => {
