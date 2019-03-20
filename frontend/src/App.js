@@ -5,7 +5,7 @@ import './App.css'
 
 const baseUrl = 'https://app.ghostinspectortest.com' // TODO: move to env variables
 
-const App = ({ suiteId }) => {
+const App = ({ suiteId, executeEnabled }) => {
   const [tests, setTests] = useState([])
   const [suite, setSuite] = useState({})
   const [isSuiteRunning, setSuiteRunning] = useState(false)
@@ -25,10 +25,8 @@ const App = ({ suiteId }) => {
     return suiteResults
   }
   useEffect(() => {
-    setTimeout(() => {
-      fetchTests()
-      fetchSuite()
-    }, 1000)
+    fetchTests()
+    fetchSuite()
   }, [])
   const total = tests.length
   const totalPassing = tests.filter(test => test.passing === true).length
@@ -42,7 +40,7 @@ const App = ({ suiteId }) => {
           </li>
         ))}
       </ul>
-      <p><button type="button" className="button button-primary" onClick={triggerExecuteSuite} disabled={isSuiteRunning}>Run Test Suite</button></p>
+      {executeEnabled && <p><button type="button" className="button button-primary" onClick={triggerExecuteSuite} disabled={isSuiteRunning}>Run Test Suite</button></p>}
     </div>
   );
 }
