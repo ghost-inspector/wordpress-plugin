@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import Dashboard from './Dashboard';
 import * as serviceWorker from './serviceWorker';
 
 const dashboard = document.getElementById('root');
 const settings = document.getElementById('gi_settings');
 if (dashboard) {
-  ReactDOM.render(<App suiteId={window.gi_ajax.suiteId} executeEnabled={window.gi_ajax.executeEnabled} />, dashboard);
+  ReactDOM.render(<Dashboard suiteId={window.gi_ajax.suiteId} executeEnabled={window.gi_ajax.executeEnabled} />, dashboard);
 }
 if (settings) {
   // ReactDOM.render(<Settings suiteId={window.gi_ajax.suiteId} />, settings);

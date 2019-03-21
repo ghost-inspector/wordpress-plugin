@@ -1,11 +1,11 @@
 import React, { useEffect, useState }  from 'react';
 import format from 'date-fns/format';
 import { getSuite, getSuiteResults, getSuiteTests, executeSuite } from './api';
-import './App.css'
+import './dashboard.css'
 
 const baseUrl = 'https://app.ghostinspectortest.com' // TODO: move to env variables
 
-const App = ({ suiteId, executeEnabled }) => {
+const Dashboard = ({ suiteId, executeEnabled }) => {
   const [tests, setTests] = useState([])
   const [suite, setSuite] = useState({})
   const [isSuiteRunning, setSuiteRunning] = useState(false)
@@ -45,4 +45,4 @@ const App = ({ suiteId, executeEnabled }) => {
   );
 }
 
-export default App;
+export default Dashboard;
