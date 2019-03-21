@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Dashboard from './Dashboard';
+import Settings from './Settings';
 import * as serviceWorker from './serviceWorker';
 
-const dashboard = document.getElementById('root');
-const settings = document.getElementById('gi_settings');
-if (dashboard) {
-  ReactDOM.render(<Dashboard suiteId={window.gi_ajax.suiteId} executeEnabled={window.gi_ajax.executeEnabled} />, dashboard);
+const dashboardContainer = document.getElementById('ghost_inspector_dashboard');
+const settingsContainer = document.getElementById('ghost_inspector_settings');
+if (dashboardContainer) {
+  ReactDOM.render(<Dashboard suiteId={window.gi_ajax.suiteId} executeEnabled={window.gi_ajax.executeEnabled} />, dashboardContainer);
 }
-if (settings) {
-  // ReactDOM.render(<Settings suiteId={window.gi_ajax.suiteId} />, settings);
+if (settingsContainer) {
+  ReactDOM.render(<Settings suiteId={window.gi_ajax.suiteId} />, settingsContainer);
 }
 
 // If you want your app to work offline and load faster, you can change

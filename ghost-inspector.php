@@ -1,11 +1,17 @@
 <?php
 /**
  * Plugin Name: Ghost Inspector
+ * Plugin URI: http://wordpress.org/extend/plugins/#
+ * Description: Display the latest test results of a single suite within your WP Admin Dashboard
+ * Author: Ghost Inspector
+ * Version: 1.0
+ * Author URI: https://ghostinspector.com/
  */
 
 function gi_load_scripts ($hook) {
-  // only load scripts on dashboard
-  if ($hook != 'index.php') {
+  // only load scripts on dashboard and settings page
+  global $gi_settings_page;
+  if ($hook != 'index.php' && $hook != $gi_settings_page) {
     return;
   }
 
@@ -51,9 +57,43 @@ function gi_add_widget() {
 }
 
 function gi_display_widget() {
-  include 'ghost-inspector-display.php';
+  ?>
+  <div id="ghost_inspector_dashboard"></div>
+  <?php
 }
 
 add_action('admin_enqueue_scripts', 'gi_load_scripts');
 add_action('wp_ajax_gi_api_proxy', 'gi_api_proxy' );
 add_action('wp_dashboard_setup', 'gi_add_widget');
+
+// SETTINGS
+
+// Init plugin options to white list our options
+function ghost_inspector_settings_init(){
+	register_setting( 'ghost_inspector_settings_options', 'gi_sample', 'ghost_inspector_settings_validate' );
+}
+
+// Add menu page
+function ghost_inspector_settings_add_page() {
+  global $gi_settings_page;
+  $gi_settings_page = add_options_page('Ghost Inspector Settings', 'Ghost Inspector Settings', 'manage_options', 'ghost_inspector_settings', 'ghost_inspector_settings_do_page');
+}
+
+// Draw the menu page itself
+function ghost_inspector_settings_do_page() {
+	?>
+	<div id="ghost_inspector_settings"></div>
+	<?php
+}
+
+// Sanitize and validate input. Accepts an array, return a sanitized array.
+function ghost_inspector_settings_validate($input) {
+	// Our first value is either 0 or 1
+	$input['option1'] = ( $input['option1'] == 1 ? 1 : 0 );
+	// Say our second option must be safe text with no HTML tags
+	$input['sometext'] =  wp_filter_nohtml_kses($input['sometext']);
+	return $input;
+}
+
+add_action('admin_init', 'ghost_inspector_settings_init' );
+add_action('admin_menu', 'ghost_inspector_settings_add_page');
