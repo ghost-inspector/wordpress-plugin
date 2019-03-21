@@ -32,7 +32,7 @@ const App = ({ suiteId, executeEnabled }) => {
   const totalPassing = tests.filter(test => test.passing === true).length
   return (
     <div className="ghost_inspector_wrapper">
-      <p className="ghost_inspector_header">Latest Test Results for Suite <a href={`${baseUrl}/suites/${suiteId}`} className="ghost_inspector_suite_name">{suite.name}</a> ({totalPassing}/{total} passing)</p>
+      <p className="ghost_inspector_header">Latest results for suite: <a href={`${baseUrl}/suites/${suiteId}`} className="ghost_inspector_suite_name">{suite.name}</a> ({totalPassing}/{total} passing)</p>
       <ul className="ghost_inspector_tests">
         {tests.map(test => (
           <li key={test._id}>
