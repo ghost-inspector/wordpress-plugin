@@ -1,13 +1,36 @@
-import React, { useEffect, useState }  from 'react';
+import React, { useState }  from 'react';
+
+const request = async (endpoint, params = {}) => {
+  const { urls } = window.gi_ajax
+  const response = await fetch(`${urls.proxy}&${new URLSearchParams(Object.entries({
+    ...params,
+    endpoint
+  }))}`)
+  const json = await response.json()
+  if (json.code === 'SUCCESS') {
+    return json.data
+  } else {
+    throw new Error(json.message)
+  }
+}
 
 const Settings = () => {
   const [apiKey, setApiKey] = useState('')
   const [suiteId, setSuiteId] = useState('')
   const updateApiKey = (event) => setApiKey(event.target.value)
   const updateSuiteId = (event) => setSuiteId(event.target.value)
-  const updateSettings = (event) => {
+  const updateSettings = async (event) => {
     event.preventDefault()
     console.log(apiKey, suiteId)
+    const response = await fetch(window.gi_ajax.urls.settings, {
+      body: JSON.stringify({ apiKey, suiteId }), // Coordinate the body type with 'Content-Type'
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+    })
+    const json = await response.json()
+    console.log(json)
   }
   return (
     <form onSubmit={updateSettings}>

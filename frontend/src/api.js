@@ -1,7 +1,7 @@
 
 export const request = async (endpoint, params = {}) => {
-  const { ajax_url } = window.gi_ajax
-  const response = await fetch(`${ajax_url}&${new URLSearchParams(Object.entries({
+  const { urls } = window.gi_ajax
+  const response = await fetch(`${urls.proxy}&${new URLSearchParams(Object.entries({
     ...params,
     endpoint
   }))}`)
