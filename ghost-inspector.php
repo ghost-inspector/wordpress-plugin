@@ -8,7 +8,59 @@
  * Author URI: https://ghostinspector.com/
  */
 
-function gi_load_scripts ($hook) {
+// proxy requests to the GI API so that the API key remains hidden
+function gi_api_proxy($request) {
+  $gi_params = $request->get_query_params();
+  $gi_params['apiKey'] = get_option('gi_api_key');
+  $gi_endpoint = $gi_params['endpoint'];
+  unset($gi_params['endpoint']);
+  $gi_request = wp_remote_get("https://api.ghostinspectortest.com/v1$gi_endpoint" . '?' . http_build_query($gi_params));
+  return json_decode(wp_remote_retrieve_body($gi_request));
+}
+
+// get saved settings from WP DB
+function gi_get_settings($request) {
+  $api_key = get_option('gi_api_key');
+  $suite_id = get_option('gi_suite_id');
+  return new WP_REST_RESPONSE(array(
+    'success' => true,
+    'value'   => array(
+      'apiKey'  => $api_key,
+      'suiteId' => $suite_id
+    )
+  ), 200);
+}
+
+// save settings to WP DB
+function gi_update_settings($request) {
+  $gi_json = $request->get_json_params();
+  // store the values in wp_options table
+  $updated_api_key = update_option('gi_api_key', $gi_json['apiKey']);
+  $updated_suite_id = update_option('gi_suite_id', $gi_json['suiteId']);
+  return new WP_REST_RESPONSE(array(
+    'success' => $updated_api_key && $updated_suite_id,
+    'value'   => $gi_json
+  ), 200);
+}
+
+add_action('rest_api_init', function () {
+  register_rest_route('ghost-inspector/v1', '/proxy', array(
+    // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
+    'methods'  => WP_REST_Server::READABLE,
+    // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
+    'callback' => 'gi_api_proxy',
+  ));
+  register_rest_route('ghost-inspector/v1', '/settings', array(
+    'methods'  => WP_REST_Server::READABLE,
+    'callback' => 'gi_get_settings',
+  ));
+  register_rest_route('ghost-inspector/v1', '/settings', array(
+    'methods'  => WP_REST_Server::CREATABLE,
+    'callback' => 'gi_update_settings',
+  ));
+});
+
+add_action('admin_enqueue_scripts', function ($hook) {
   // only load scripts on dashboard and settings page
   global $gi_settings_page;
   if ($hook != 'index.php' && $hook != $gi_settings_page) {
@@ -38,99 +90,26 @@ function gi_load_scripts ($hook) {
     // 'nonce'   => $gi_title_nonce,
     'suiteId' => get_option('gi_suite_id'),
   ));
-}
-
-function gi_add_widget() {
-  wp_add_dashboard_widget('ghost_inspector_widget', 'Ghost Inspector', 'gi_display_widget');
-}
-
-function gi_display_widget() {
-  ?>
-  <div id="ghost_inspector_dashboard"></div>
-  <?php
-}
-
-add_action('admin_enqueue_scripts', 'gi_load_scripts');
-
-function gi_api_proxy($request) {
-  $gi_params = $request->get_query_params();
-  $gi_params['apiKey'] = get_option('gi_api_key');
-  $gi_endpoint = $gi_params['endpoint'];
-  unset($gi_params['endpoint']);
-  $gi_request = wp_remote_get("https://api.ghostinspectortest.com/v1$gi_endpoint" . '?' . http_build_query($gi_params));
-  return json_decode(wp_remote_retrieve_body($gi_request));
-}
-
-function gi_get_settings($request) {
-  $api_key = get_option('gi_api_key');
-  $suite_id = get_option('gi_suite_id');
-  return new WP_REST_RESPONSE(array(
-    'success' => true,
-    'value'   => array(
-      'apiKey'  => $api_key,
-      'suiteId' => $suite_id
-    )
-  ), 200);
-}
-
-function gi_update_settings($request) {
-  $gi_json = $request->get_json_params();
-  // store the values in wp_options table
-  $updated_api_key = update_option('gi_api_key', $gi_json['apiKey']);
-  $updated_suite_id = update_option('gi_suite_id', $gi_json['suiteId']);
-  return new WP_REST_RESPONSE(array(
-    'success' => $updated_api_key && $updated_suite_id,
-    'value'   => $gi_json
-  ), 200);
-}
-
-add_action('rest_api_init', function () {
-  register_rest_route('ghost-inspector/v1', '/proxy', array(
-    // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
-    'methods'  => WP_REST_Server::READABLE,
-    // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
-    'callback' => 'gi_api_proxy',
-  ));
-  register_rest_route('ghost-inspector/v1', '/settings', array(
-    'methods'  => WP_REST_Server::READABLE,
-    'callback' => 'gi_get_settings',
-  ));
-  register_rest_route('ghost-inspector/v1', '/settings', array(
-    'methods'  => WP_REST_Server::CREATABLE,
-    'callback' => 'gi_update_settings',
-  ));
 });
 
-add_action('wp_dashboard_setup', 'gi_add_widget');
+// display dashboard widget
+add_action('wp_dashboard_setup', function () {
+  wp_add_dashboard_widget('ghost_inspector_widget', 'Ghost Inspector', 'gi_display_widget');
+  function gi_display_widget() {
+    ?>
+    <div id="ghost_inspector_dashboard"></div>
+    <?php
+  }
+});
 
-// SETTINGS
-
-// Init plugin options to white list our options
-function ghost_inspector_settings_init(){
-	register_setting( 'ghost_inspector_settings_options', 'gi_sample', 'ghost_inspector_settings_validate' );
-}
-
-// Add menu page
-function ghost_inspector_settings_add_page() {
+// add to settings menu
+add_action('admin_menu', function () {
   global $gi_settings_page;
-  $gi_settings_page = add_options_page('Ghost Inspector Settings', 'Ghost Inspector Settings', 'manage_options', 'ghost_inspector_settings', 'ghost_inspector_settings_do_page');
-}
-
-// Draw the menu page itself
-function ghost_inspector_settings_do_page() {
-	?>
-	<div id="ghost_inspector_settings"></div>
-	<?php
-}
-
-// Sanitize and validate input. Accepts an array, return a sanitized array.
-// function ghost_inspector_settings_validate($input) {
-// 	// Our first value is either 0 or 1
-// 	$input['option1'] = ( $input['option1'] == 1 ? 1 : 0 );
-// 	// Say our second option must be safe text with no HTML tags
-// 	$input['sometext'] =  wp_filter_nohtml_kses($input['sometext']);
-// 	return $input;
-// }
-
-add_action('admin_init', 'ghost_inspector_settings_init' );
-add_action('admin_menu', 'ghost_inspector_settings_add_page');
+  $gi_settings_page = add_options_page('Ghost Inspector Settings', 'Ghost Inspector Settings', 'manage_options', 'ghost-inspector-settings', 'ghost_inspector_settings_do_page');
+  // Draw the menu page itself
+  function ghost_inspector_settings_do_page() {
+    ?>
+    <div id="ghost_inspector_settings"></div>
+    <?php
+  }
+});
