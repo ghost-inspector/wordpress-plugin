@@ -29,7 +29,6 @@ function gi_load_scripts ($hook) {
   }
 
   wp_enqueue_script('ghost_inspector_react', $react_js_to_load, '', mt_rand(10,1000), true);
-  $gi_suite_id = '5be210847a05a37dcf89fc43'; // TODO: get from WP plugin settings
   // $gi_title_nonce = wp_create_nonce('gi_api_proxy');
   wp_localize_script('ghost_inspector_react', 'gi_ajax', array(
     'urls'    => array(
@@ -37,7 +36,7 @@ function gi_load_scripts ($hook) {
       'settings' => rest_url('ghost-inspector/v1/settings')
     ),
     // 'nonce'   => $gi_title_nonce,
-    'suiteId' => $gi_suite_id,
+    'suiteId' => get_option('gi_suite_id'),
   ));
 }
 
