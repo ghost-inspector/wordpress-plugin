@@ -62,12 +62,25 @@ function gi_api_proxy($request) {
   return json_decode(wp_remote_retrieve_body($gi_request));
 }
 
+function gi_get_settings($request) {
+  $api_key = get_option('gi_api_key');
+  $suite_id = get_option('gi_suite_id');
+  return new WP_REST_RESPONSE(array(
+    'success' => true,
+    'value'   => array(
+      'apiKey'  => $api_key,
+      'suiteId' => $suite_id
+    )
+  ), 200);
+}
+
 function gi_update_settings($request) {
   $gi_json = $request->get_json_params();
-  // $updated_api_key = update_option('gi_api_key', $gi_json['apiKey']);
-  // $updated_suite_id = update_option('gi_suite_id', $gi_json['suiteId']);
+  // store the values in wp_options table
+  $updated_api_key = update_option('gi_api_key', $gi_json['apiKey']);
+  $updated_suite_id = update_option('gi_suite_id', $gi_json['suiteId']);
   return new WP_REST_RESPONSE(array(
-    'success' => true,//$updated_api_key && $updated_suite_id,
+    'success' => $updated_api_key && $updated_suite_id,
     'value'   => $gi_json
   ), 200);
 }
@@ -79,11 +92,12 @@ add_action('rest_api_init', function () {
     // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
     'callback' => 'gi_api_proxy',
   ));
-
   register_rest_route('ghost-inspector/v1', '/settings', array(
-    // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
+    'methods'  => WP_REST_Server::READABLE,
+    'callback' => 'gi_get_settings',
+  ));
+  register_rest_route('ghost-inspector/v1', '/settings', array(
     'methods'  => WP_REST_Server::CREATABLE,
-    // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
     'callback' => 'gi_update_settings',
   ));
 });
