@@ -29,27 +29,12 @@ function gi_load_scripts ($hook) {
   }
   wp_enqueue_script('ghost_inspector_react', $react_js_to_load, '', mt_rand(10,1000), true);
   $gi_suite_id = '5be210847a05a37dcf89fc43'; // TODO: get from WP plugin settings
-  $gi_title_nonce = wp_create_nonce('gi_api_proxy');
+  // $gi_title_nonce = wp_create_nonce('gi_api_proxy');
   wp_localize_script('ghost_inspector_react', 'gi_ajax', array(
-    'ajax_url' => admin_url('admin-ajax.php'),
-    'nonce'    => $gi_title_nonce,
+    'ajax_url' => rest_url('ghost-inspector/v1/proxy'), //admin_url('admin-ajax.php'),
+    // 'nonce'    => $gi_title_nonce,
     'suiteId'  => $gi_suite_id,
   ));
-}
-
-function gi_api_proxy() {
-    // Handle the ajax request
-    check_ajax_referer('gi_api_proxy');
-    $gi_params = $_GET;
-    $gi_params['apiKey'] = '767f9ef8707eef19d823b0f05c2a66e1b0949f0d'; // TODO: get from WP plugin settings
-    $gi_api_url = $gi_params['url'];
-    // remove WP specific query params before sending request to GI API
-    unset($gi_params['_ajax_nonce']);
-    unset($gi_params['action']);
-    unset($gi_params['url']);
-    $response = wp_remote_get(esc_url_raw($gi_api_url) . '?' . http_build_query($gi_params));
-    wp_send_json(json_decode(wp_remote_retrieve_body($response), true));
-    wp_die(); // All ajax handlers die when finished
 }
 
 function gi_add_widget() {
@@ -63,7 +48,25 @@ function gi_display_widget() {
 }
 
 add_action('admin_enqueue_scripts', 'gi_load_scripts');
-add_action('wp_ajax_gi_api_proxy', 'gi_api_proxy' );
+
+function gi_api_proxy($request) {
+  $gi_params = $request->get_query_params();
+  $gi_params['apiKey'] = '767f9ef8707eef19d823b0f05c2a66e1b0949f0d'; // TODO: get from WP plugin settings
+  $gi_endpoint = $gi_params['endpoint'];
+  unset($gi_params['endpoint']);
+  $gi_request = wp_remote_get("https://api.ghostinspectortest.com/v1$gi_endpoint" . '?' . http_build_query($gi_params));
+  return json_decode(wp_remote_retrieve_body($gi_request));
+}
+
+add_action('rest_api_init', function () {
+  register_rest_route('ghost-inspector/v1', '/proxy/', array(
+    // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
+    'methods'  => WP_REST_Server::READABLE,
+    // Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
+    'callback' => 'gi_api_proxy',
+  ));
+});
+
 add_action('wp_dashboard_setup', 'gi_add_widget');
 
 // SETTINGS
@@ -87,13 +90,13 @@ function ghost_inspector_settings_do_page() {
 }
 
 // Sanitize and validate input. Accepts an array, return a sanitized array.
-function ghost_inspector_settings_validate($input) {
-	// Our first value is either 0 or 1
-	$input['option1'] = ( $input['option1'] == 1 ? 1 : 0 );
-	// Say our second option must be safe text with no HTML tags
-	$input['sometext'] =  wp_filter_nohtml_kses($input['sometext']);
-	return $input;
-}
+// function ghost_inspector_settings_validate($input) {
+// 	// Our first value is either 0 or 1
+// 	$input['option1'] = ( $input['option1'] == 1 ? 1 : 0 );
+// 	// Say our second option must be safe text with no HTML tags
+// 	$input['sometext'] =  wp_filter_nohtml_kses($input['sometext']);
+// 	return $input;
+// }
 
 add_action('admin_init', 'ghost_inspector_settings_init' );
 add_action('admin_menu', 'ghost_inspector_settings_add_page');

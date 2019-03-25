@@ -1,11 +1,9 @@
 
-export const request = async (path, params = {}) => {
-  const { nonce, ajax_url } = window.gi_ajax
-  const response = await fetch(`${ajax_url}?${new URLSearchParams(Object.entries({
+export const request = async (endpoint, params = {}) => {
+  const { ajax_url } = window.gi_ajax
+  const response = await fetch(`${ajax_url}&${new URLSearchParams(Object.entries({
     ...params,
-    _ajax_nonce: nonce,
-    action: 'gi_api_proxy',
-    url: `https://api.ghostinspectortest.com/v1${path}`
+    endpoint
   }))}`)
   const json = await response.json()
   if (json.code === 'SUCCESS') {
