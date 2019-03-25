@@ -54,7 +54,7 @@ add_action('admin_enqueue_scripts', 'gi_load_scripts');
 
 function gi_api_proxy($request) {
   $gi_params = $request->get_query_params();
-  $gi_params['apiKey'] = '767f9ef8707eef19d823b0f05c2a66e1b0949f0d'; // TODO: get from WP plugin settings
+  $gi_params['apiKey'] = get_option('gi_api_key');
   $gi_endpoint = $gi_params['endpoint'];
   unset($gi_params['endpoint']);
   $gi_request = wp_remote_get("https://api.ghostinspectortest.com/v1$gi_endpoint" . '?' . http_build_query($gi_params));
