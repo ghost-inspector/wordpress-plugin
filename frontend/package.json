@@ -11,6 +11,7 @@
   "scripts": {
     "start": "node ./scripts/start-non-split.js",
     "build": "node ./scripts/build-non-split.js",
+    "export": "node ./scripts/export.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -24,6 +25,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "archiver": "3.0.0",
     "rewire": "^4.0.1"
   }
 }
