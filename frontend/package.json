@@ -3,13 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "date-fns": "1.30.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8"
   },
   "scripts": {
-    "start": "node ./start-non-split.js",
-    "build": "react-scripts build",
+    "start": "node ./scripts/start-non-split.js",
+    "build": "node ./scripts/build-non-split.js",
+    "preexport": "npm run build",
+    "export": "node ./scripts/export.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -23,6 +26,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "archiver": "3.0.0",
     "rewire": "^4.0.1"
   }
 }

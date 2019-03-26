@@ -1,0 +1,28 @@
+.ghost_inspector_wrapper a {
+  font-weight: 500;
+  padding-bottom: 1px;
+  border-bottom: 1px dotted #8aa7c0;
+}
+
+.ghost_inspector_passing {
+  color: #62bf67
+}
+
+.ghost_inspector_failing {
+  color: #de6764;
+}
+
+.postbox .inside .ghost_inspector_tests {
+  margin-left: -11px;
+  margin-right: -11px;
+}
+
+.ghost_inspector_tests li {
+  border-top: 1px solid #ddd;
+  padding: 6px 11px;
+  margin: 0;
+}
+
+.ghost_inspector_tests li:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
