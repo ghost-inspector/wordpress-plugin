@@ -11,6 +11,7 @@
   "scripts": {
     "start": "node ./scripts/start-non-split.js",
     "build": "node ./scripts/build-non-split.js",
+    "preexport": "npm run build",
     "export": "node ./scripts/export.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
