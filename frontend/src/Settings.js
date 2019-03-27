@@ -7,7 +7,7 @@ const Settings = () => {
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setSaving] = useState(false)
   const updateApiKey = (event) => setApiKey(event.target.value)
-  const updateSuiteId = async (event) => setSuiteId(event.target.value)
+  const updateSuiteId = (event) => setSuiteId(event.target.value)
   const updateSettings = async (event) => {
     event.preventDefault()
     setSaving(true)
