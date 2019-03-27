@@ -5,17 +5,32 @@ import './dashboard.css'
 
 const baseUrl = 'https://app.ghostinspectortest.com' // TODO: move to env variables
 
+const ErrorMessage = ({ message }) => (
+  <span>
+    {message} Please try updating your <a href="options-general.php?page=ghost-inspector-settings">settings</a>.
+  </span>
+)
+
 const Dashboard = ({ suiteId, executeEnabled }) => {
   const [tests, setTests] = useState([])
   const [suite, setSuite] = useState({})
   const [isSuiteRunning, setSuiteRunning] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const fetchTests = async () => {
-    const tests = await getSuiteTests(suiteId)
-    setTests(tests)
+    try {
+      const tests = await getSuiteTests(suiteId)
+      setTests(tests)
+    } catch (error) {
+      setErrorMessage(<ErrorMessage message={error.message} />)
+    }
   }
   const fetchSuite = async () => {
-    const suite = await getSuite(suiteId)
-    setSuite(suite)
+    try {
+      const suite = await getSuite(suiteId)
+      setSuite(suite)
+    } catch (error) {
+      setErrorMessage(<ErrorMessage message={error.message} />)
+    }
   }
   const triggerExecuteSuite = async () => {
     setSuiteRunning(true)
@@ -25,9 +40,16 @@ const Dashboard = ({ suiteId, executeEnabled }) => {
     return suiteResults
   }
   useEffect(() => {
-    fetchTests()
-    fetchSuite()
+    if (suiteId) {
+      fetchTests()
+      fetchSuite()
+    } else {
+      setErrorMessage(<ErrorMessage message={'Could not find your suite ID.'} />)
+    }
   }, [])
+  if (errorMessage) {
+    return <div>{errorMessage}</div>
+  }
   const total = tests.length
   const totalPassing = tests.filter(test => test.passing === true).length
   return (
