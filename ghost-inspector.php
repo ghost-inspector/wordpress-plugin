@@ -108,6 +108,13 @@ add_action('admin_menu', function () {
     <div id="ghost_inspector_settings"></div>
     <?php
   }
+
+  // add link to settings on plugin page (next to "Deactivate")
+  add_filter('plugin_action_links_' . plugin_basename(__FILE__), function ($links) {
+    $settings_link = '<a href="options-general.php?page=ghost-inspector-settings">' . __( 'Settings' ) . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
+  });
 });
 
 // cleanup data on uninstall
