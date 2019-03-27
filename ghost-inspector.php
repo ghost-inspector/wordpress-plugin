@@ -25,8 +25,8 @@ function gi_get_settings($request) {
   return new WP_REST_RESPONSE(array(
     'success' => true,
     'value'   => array(
-      'apiKey'  => $api_key,
-      'suiteId' => $suite_id
+      'apiKey'  => !$api_key ? '' : $api_key,
+      'suiteId' => !$suite_id ? '' : $suite_id,
     )
   ), 200);
 }
@@ -109,3 +109,11 @@ add_action('admin_menu', function () {
     <?php
   }
 });
+
+// cleanup data on uninstall
+function ghost_inspector_uninstall () {
+  delete_option('gi_api_key');
+  delete_option('gi_suite_id');
+}
+
+register_uninstall_hook(__FILE__, 'ghost_inspector_uninstall');
