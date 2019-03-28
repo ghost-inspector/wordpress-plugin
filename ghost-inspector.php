@@ -6,6 +6,7 @@
  * Author: Ghost Inspector
  * Version: 1.0
  * Author URI: https://ghostinspector.com/
+ * Text Domain: ghost-inspector
  */
 
 // proxy requests to the GI API so that the API key remains hidden
@@ -43,6 +44,16 @@ function gi_update_settings($request) {
   ), 200);
 }
 
+// check permissions
+function gi_settings_permissions_check() {
+  // Restrict endpoint to only users who have the capability to manage options.
+  if (current_user_can('manage_options')) {
+    return true;
+  }
+
+  return new WP_Error('rest_forbidden', esc_html__('You do not have permissions to view this data.', 'ghost-inspector'), array('status' => 401));;
+}
+
 add_action('rest_api_init', function () {
   register_rest_route('ghost-inspector/v1', '/proxy', array(
     // By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
@@ -53,10 +64,12 @@ add_action('rest_api_init', function () {
   register_rest_route('ghost-inspector/v1', '/settings', array(
     'methods'  => WP_REST_Server::READABLE,
     'callback' => 'gi_get_settings',
+    'permission_callback' => 'gi_settings_permissions_check'
   ));
   register_rest_route('ghost-inspector/v1', '/settings', array(
     'methods'  => WP_REST_Server::CREATABLE,
     'callback' => 'gi_update_settings',
+    'permission_callback' => 'gi_settings_permissions_check'
   ));
 });
 
@@ -77,13 +90,12 @@ add_action('admin_enqueue_scripts', function ($hook) {
 
   wp_enqueue_style('ghost_inspector_styles', $gi_css_to_load);
   wp_enqueue_script('ghost_inspector_react', $gi_js_to_load, '', mt_rand(10,1000), true);
-  // $gi_title_nonce = wp_create_nonce('gi_api_proxy');
   wp_localize_script('ghost_inspector_react', 'gi_ajax', array(
     'urls'    => array(
       'proxy'    => rest_url('ghost-inspector/v1/proxy'),
       'settings' => rest_url('ghost-inspector/v1/settings')
     ),
-    // 'nonce'   => $gi_title_nonce,
+    'nonce'   => wp_create_nonce('wp_rest'),
     'suiteId' => get_option('gi_suite_id'),
   ));
 });

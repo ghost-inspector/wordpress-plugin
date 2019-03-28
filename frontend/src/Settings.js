@@ -1,7 +1,7 @@
 import React, { useEffect, useState }  from 'react';
 import { getSuite } from './api';
 
-const Settings = () => {
+const Settings = ({ nonce, urls }) => {
   const [apiKey, setApiKey] = useState('')
   const [suiteId, setSuiteId] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
@@ -18,17 +18,20 @@ const Settings = () => {
     } catch (error) {
       setErrorMessage(error.message)
     }
-    await fetch(window.gi_ajax.urls.settings, {
+    await fetch(urls.settings, {
       body: JSON.stringify({ apiKey, suiteId }),
       method: 'POST',
       headers: new Headers({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': nonce
       }),
     })
     setSaving(false)
   }
   const getSettings = async () => {
-    const response = await fetch(window.gi_ajax.urls.settings)
+    const response = await fetch(urls.settings, {
+      headers: new Headers({ 'X-WP-Nonce': nonce })
+    })
     const json = await response.json()
     setApiKey(json.value.apiKey)
     setSuiteId(json.value.suiteId)
