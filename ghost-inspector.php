@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Ghost Inspector
- * Plugin URI: http://wordpress.org/extend/plugins/#
+ * Plugin URI: http://wordpress.org/plugins/ghost-inspector
  * Description: Display the latest test results of a single suite within your WP Admin Dashboard
+ * Version: 1.0.0
  * Author: Ghost Inspector
- * Version: 1.0
- * Author URI: https://ghostinspector.com/
+ * Author URI: https://ghostinspector.com
  * Text Domain: ghost-inspector
  */
 
