@@ -4,25 +4,49 @@
   border-bottom: 1px dotted #8aa7c0;
 }
 
-.ghost_inspector_passing {
+.ghost_inspector_wrapper .dashicons-yes {
   color: #62bf67
 }
 
-.ghost_inspector_failing {
+.ghost_inspector_wrapper .dashicons-no {
   color: #de6764;
 }
 
 .postbox .inside .ghost_inspector_tests {
-  margin-left: -11px;
-  margin-right: -11px;
+  margin-left: -12px;
+  margin-right: -12px;
 }
 
-.ghost_inspector_tests li {
+.ghost_inspector_tests table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ghost_inspector_tests th {
+  font-weight: normal;
+  text-align: left;
+  background-color: #ddd;
+  color: #777;
+}
+
+.ghost_inspector_tests th:last-child {
+  text-align: right;
+}
+
+.ghost_inspector_tests td,
+.ghost_inspector_tests th {
   border-top: 1px solid #ddd;
   padding: 6px 11px;
-  margin: 0;
 }
 
-.ghost_inspector_tests li:nth-of-type(odd) {
+.ghost_inspector_tests tr:nth-of-type(odd) td {
   background-color: #f9f9f9;
+}
+
+/* trick to get cell to take up available width */
+.ghost_inspector_tests td {
+  white-space: nowrap;
+}
+.ghost_inspector_tests td:first-child {
+  width: 99%; /* trick to get cell to take up available width */
 }
