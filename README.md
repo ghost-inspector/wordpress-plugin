@@ -4,7 +4,7 @@ If you want to run this locally, I've included a Docker stack config for Wordpre
 ```
 docker stack deploy -c stack.yml wordpress
 ```
-It will help speed up development to either mount the Docker Wordpress container so you can directly modify the files, or use this command/path to copy the files after saving (adjust for your local):
+It will help speed up development to either mount the Docker Wordpress container so you can directly modify the files, or use this command/path to copy the files after saving (adjust for your local path, container ID):
 ```
 docker cp [local-repo-location]/ghost-inspector.php [your-wordpress-container-id]:/var/www/html/wp-content/plugins/ghost-inspector/ghost-inspector.php
 ```
