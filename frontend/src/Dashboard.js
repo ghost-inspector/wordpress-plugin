@@ -58,7 +58,15 @@ const Dashboard = ({ suiteId, executeEnabled }) => {
       <ul className="ghost_inspector_tests">
         {tests.map(test => (
           <li key={test._id}>
-            <a href={`${baseUrl}/tests/${test._id}`} target="_blank" rel="noopener noreferrer">{test.name}</a> <span className={`ghost_inspector_${test.passing ? 'passing' : 'failing'}`}>{test.passing ? 'passed' : 'failed'}</span> on {format(new Date(test.dateExecutionFinished), 'MMM D, YYYY @ h:mm:ss A')}
+            <span>
+              <a href={`${baseUrl}/tests/${test._id}`} target="_blank" rel="noopener noreferrer">{test.name}</a>
+            </span>
+            <span className="ghost_inspector_status">
+              <span className={`dashicons dashicons-${test.passing ? 'yes' : 'no'}`}></span>
+            </span>
+            <span>
+              {format(new Date(test.dateExecutionFinished), 'MMM D')}
+            </span>
           </li>
         ))}
       </ul>

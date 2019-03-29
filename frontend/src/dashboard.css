@@ -4,11 +4,11 @@
   border-bottom: 1px dotted #8aa7c0;
 }
 
-.ghost_inspector_passing {
+.ghost_inspector_wrapper .dashicons-yes {
   color: #62bf67
 }
 
-.ghost_inspector_failing {
+.ghost_inspector_wrapper .dashicons-no {
   color: #de6764;
 }
 
@@ -21,8 +21,21 @@
   border-top: 1px solid #ddd;
   padding: 6px 11px;
   margin: 0;
+  display: flex;
 }
 
 .ghost_inspector_tests li:nth-of-type(odd) {
   background-color: #f9f9f9;
+}
+
+.ghost_inspector_tests li > span:first-child {
+  flex-grow: 1;
+}
+
+.ghost_inspector_tests .ghost_inspector_status {
+  text-align: center;
+}
+
+.ghost_inspector_tests li > span:last-child {
+  padding-left: 10px;
 }
