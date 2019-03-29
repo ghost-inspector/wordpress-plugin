@@ -113,7 +113,7 @@ add_action('wp_dashboard_setup', function () {
 // add to settings menu
 add_action('admin_menu', function () {
   global $gi_settings_page;
-  $gi_settings_page = add_options_page('Ghost Inspector Settings', 'Ghost Inspector Settings', 'manage_options', 'ghost-inspector-settings', 'ghost_inspector_settings_do_page');
+  $gi_settings_page = add_options_page('Ghost Inspector Settings', 'Ghost Inspector', 'manage_options', 'ghost-inspector-settings', 'ghost_inspector_settings_do_page');
   // Draw the menu page itself
   function ghost_inspector_settings_do_page() {
     ?>
