@@ -58,6 +58,8 @@ const Settings = ({ nonce, urls }) => {
   }
   return (
     <div>
+      <h1>Ghost Inspector Settings</h1>
+      <h2>Automated Website Testing Made Easy</h2>
       {!apiKey && <p><a href="https://app.ghostinspector.com/account" target="_blank" rel="noopener noreferrer" className="button button-primary">Login or sign up to get your API key</a></p>}
       <form onSubmit={updateSettings}>
         <p><label>API Key: <input type="text" value={apiKey} onChange={updateApiKey} /></label></p>
