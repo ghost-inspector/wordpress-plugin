@@ -55,21 +55,26 @@ const Dashboard = ({ suiteId, executeEnabled }) => {
   return (
     <div className="ghost_inspector_wrapper">
       <p className="ghost_inspector_header">Latest results for suite: <a href={`${baseUrl}/suites/${suiteId}`} target="_blank" rel="noopener noreferrer" className="ghost_inspector_suite_name">{suite.name}</a> ({totalPassing}/{total} passing)</p>
-      <ul className="ghost_inspector_tests">
-        {tests.map(test => (
-          <li key={test._id}>
-            <span>
-              <a href={`${baseUrl}/tests/${test._id}`} target="_blank" rel="noopener noreferrer">{test.name}</a>
-            </span>
-            <span className="ghost_inspector_status">
-              <span className={`dashicons dashicons-${test.passing ? 'yes' : 'no'}`}></span>
-            </span>
-            <span>
-              {format(new Date(test.dateExecutionFinished), 'MMM D')}
-            </span>
-          </li>
-        ))}
-      </ul>
+      <div className="ghost_inspector_tests">
+        <table>
+          <tr>
+            <th>Test Name</th>
+            <th>Last Run</th>
+          </tr>
+          {tests.map(test => (
+            <tr key={test._id}>
+              <td>
+                <a href={`${baseUrl}/tests/${test._id}`} target="_blank" rel="noopener noreferrer">{test.name}</a>
+              </td>
+              <td className="ghost_inspector_status">
+                <span className={`dashicons dashicons-${test.passing ? 'yes' : 'no'}`}></span>
+                {format(new Date(test.dateExecutionFinished), 'MMM D')}
+              </td>
+            </tr>
+          ))}
+        </table>
+      </div>
+
       {executeEnabled && <p><button type="button" className="button button-primary" onClick={triggerExecuteSuite} disabled={isSuiteRunning}>Run Test Suite</button></p>}
     </div>
   );
