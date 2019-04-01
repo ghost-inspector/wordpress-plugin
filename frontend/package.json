@@ -8,6 +8,10 @@
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8"
   },
+  "devDependencies": {
+    "archiver": "3.0.0",
+    "rewire": "^4.0.1"
+  },
   "scripts": {
     "start": "node ./scripts/start-non-split.js",
     "build": "node ./scripts/build-non-split.js",
@@ -24,9 +28,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "archiver": "3.0.0",
-    "rewire": "^4.0.1"
-  }
+  ]
 }

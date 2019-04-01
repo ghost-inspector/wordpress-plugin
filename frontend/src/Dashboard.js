@@ -57,10 +57,13 @@ const Dashboard = ({ suiteId, executeEnabled }) => {
       <p className="ghost_inspector_header">Latest results for suite: <a href={`${baseUrl}/suites/${suiteId}`} target="_blank" rel="noopener noreferrer" className="ghost_inspector_suite_name">{suite.name}</a> ({totalPassing}/{total} passing)</p>
       <div className="ghost_inspector_tests">
         <table>
-          <tr>
-            <th>Test Name</th>
-            <th>Last Run</th>
-          </tr>
+          <thead>
+            <tr>
+              <th>Test Name</th>
+              <th>Last Run</th>
+            </tr>
+          </thead>
+          <tbody>
           {tests.map(test => (
             <tr key={test._id}>
               <td>
@@ -72,6 +75,7 @@ const Dashboard = ({ suiteId, executeEnabled }) => {
               </td>
             </tr>
           ))}
+          </tbody>
         </table>
       </div>
 
