@@ -15,7 +15,8 @@ function gi_api_proxy($request) {
   $gi_params['apiKey'] = get_option('gi_api_key');
   $gi_endpoint = $gi_params['endpoint'];
   unset($gi_params['endpoint']);
-  $gi_request = wp_remote_get("https://api.ghostinspectortest.com/v1$gi_endpoint" . '?' . http_build_query($gi_params));
+  $query = http_build_query($gi_params);
+  $gi_request = wp_remote_get("https://api.ghostinspectortest.com/v1$gi_endpoint?$query");
   return json_decode(wp_remote_retrieve_body($gi_request));
 }
 
