@@ -1,6 +1,6 @@
 
 export const request = async (endpoint, params = {}) => {
-  const { urls } = window.gi_ajax
+  const { urls } = window.ghost_inspector_ajax
   const connector = urls.proxy.indexOf('?') > -1 ? '&' : '?' // check for query param in existing WP URL (depends on permalink settings)
   const response = await fetch(`${urls.proxy}${connector}${new URLSearchParams(Object.entries({
     ...params,
