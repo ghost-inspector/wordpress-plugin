@@ -3,7 +3,7 @@ import format from 'date-fns/format';
 import { getSuite, getSuiteResults, getSuiteTests, executeSuite } from './api';
 import './dashboard.css'
 
-const baseUrl = 'https://app.ghostinspectortest.com' // TODO: move to env variables
+const baseUrl = 'https://app.ghostinspector.com'
 
 const ErrorMessage = ({ message }) => (
   <span>
