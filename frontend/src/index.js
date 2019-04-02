@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Dashboard from './Dashboard';
 import Settings from './Settings';
 
-const { suiteId, urls, executeEnabled, nonce } = window.gi_ajax;
+const { suiteId, urls, executeEnabled, nonce } = window.ghost_inspector_ajax;
 const dashboardContainer = document.getElementById('ghost_inspector_dashboard');
 const settingsContainer = document.getElementById('ghost_inspector_settings');
 if (dashboardContainer) {
