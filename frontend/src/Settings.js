@@ -5,6 +5,7 @@ const Settings = ({ nonce, urls }) => {
   const [apiKey, setApiKey] = useState('')
   const [suiteId, setSuiteId] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
   const [isSaving, setSaving] = useState(false)
   const [isGetting, setGetting] = useState(true)
   const updateApiKey = (event) => setApiKey(event.target.value)
@@ -12,13 +13,6 @@ const Settings = ({ nonce, urls }) => {
   const updateSettings = async (event) => {
     event.preventDefault()
     setSaving(true)
-    // check if API key and suite ID are valid
-    try {
-      await getSuite(suiteId)
-      setErrorMessage('')
-    } catch (error) {
-      setErrorMessage(error.message)
-    }
     await fetch(urls.settings, {
       body: JSON.stringify({ apiKey, suiteId }),
       method: 'POST',
@@ -27,6 +21,15 @@ const Settings = ({ nonce, urls }) => {
         'X-WP-Nonce': nonce
       }),
     })
+    // check if API key and suite ID are valid
+    try {
+      await getSuite(suiteId)
+      setErrorMessage('')
+      setSuccessMessage('Settings saved and validated with API!')
+    } catch (error) {
+      setErrorMessage(error.message)
+      setSuccessMessage('')
+    }
     setSaving(false)
   }
   const getSettings = async () => {
@@ -65,6 +68,7 @@ const Settings = ({ nonce, urls }) => {
         <p><label>API Key: <input type="password" value={apiKey} onChange={updateApiKey} /></label></p>
         <p><label>Suite ID: <input type="text" value={suiteId} onChange={updateSuiteId} /></label></p>
         {errorMessage && <div className="error settings-error"><p>{errorMessage}</p></div>}
+        {successMessage && <div className="notice notice-success"><p>{successMessage}</p></div>}
         <p><button type="submit" className="button button-primary" disabled={isSaving}>Submit</button></p>
       </form>
     </div>

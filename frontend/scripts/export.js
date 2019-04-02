@@ -41,6 +41,8 @@ archive.pipe(output);
 archive.glob('../frontend/build/static/js/main.*.js', null, { name: 'ghost-inspector.js', prefix });
 archive.glob('../frontend/build/static/css/main.*.css', null, { name: 'ghost-inspector.css', prefix });
 archive.file(path.resolve(__dirname, '../../ghost-inspector.php'), { name: 'ghost-inspector.php', prefix });
+archive.file(path.resolve(__dirname, '../../README.txt'), { name: 'README.txt', prefix });
+archive.file(path.resolve(__dirname, '../../LICENSE.txt'), { name: 'LICENSE.txt', prefix });
 
 // finalize the archive (ie we are done appending files but streams have to finish yet)
 // 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
