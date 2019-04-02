@@ -1,5 +1,5 @@
 === Ghost Inspector ===
-Contributors: simpixelated
+Contributors: ghostinspector, simpixelated
 Tags: testing
 Requires at least: 3.0.1
 Tested up to: 5.1
