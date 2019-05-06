@@ -1,0 +1,75 @@
+version: 2.1
+executors:
+  docker-executor:
+    docker: 
+      - image: docker:17.05.0-ce-git
+
+jobs:
+  test_plugin:
+    executor: docker-executor
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run:
+          name: Set up network
+          command: |
+            docker network create wp-network
+      - run:
+          name: Set up database
+          command: |
+            docker run -d \
+              -e MYSQL_ROOT_PASSWORD=1234 \
+              -e MYSQL_DATABASE=wordpress \
+              --name db \
+              --network wp-network \
+              mysql:5.7
+      - run:
+          name: Start WordPress
+          command: |
+            docker run -d \
+              -e WORDPRESS_DB_HOST=db:3306 \
+              -e WORDPRESS_DB_USER=root \
+              -e WORDPRESS_DB_PASSWORD=1234 \
+              -e WORDPRESS_DB_NAME=wordpress \
+              --name wp-container \
+              --network wp-network \
+              wordpress
+      - run:
+          name: Install WordPress
+          command: |
+            docker run -it --rm \
+              --volumes-from wp-container \
+              --network wp-network \
+              wordpress:cli core install \
+                --url=localhost \
+                --title=test \
+                --admin_user=admin \
+                --admin_password=admin \
+                --admin_email=foo@bar.com
+      - run:
+          name: Install Ghost Inspector plugin
+          command: |
+            docker run -it --rm \
+              --volumes-from wp-container \
+              --user xfs \
+              --network wp-network \
+              wordpress:cli plugin install ghost-inspector \
+                --activate \
+                --url=localhost
+      - run:
+          name: execute Ghost Inspector test(s)
+          command: |
+            docker run \
+              -e APP_PORT=wp-container:80 \
+              -e GI_API_KEY=$GI_API_KEY \
+              -e GI_SUITE=$GI_SUITE \
+              -e NGROK_TOKEN=$NGROK_TOKEN \
+              -e GI_PARAM_wp_username=admin \
+              -e GI_PARAM_wp_password=admin \
+              --network wp-network \
+              ghostinspector/test-runner-standalone
+
+workflows:
+  test:
+    jobs:
+      - test_plugin
