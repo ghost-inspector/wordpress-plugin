@@ -31,7 +31,7 @@ jobs:
               -e WORDPRESS_DB_USER=root \
               -e WORDPRESS_DB_PASSWORD=1234 \
               -e WORDPRESS_DB_NAME=wordpress \
-              -e WORDPRESS_CONFIG_EXTRA=define('WP_SITEURL', 'http://' . $_SERVER['HTTP_HOST']);define('WP_HOME', 'http://' . $_SERVER['HTTP_HOST']); \
+              -e WORDPRESS_CONFIG_EXTRA="define('WP_SITEURL', 'http://' . \$_SERVER['HTTP_HOST']); define('WP_HOME', 'http://' . \$_SERVER['HTTP_HOST']);" \
               --name wp-container \
               --network wp-network \
               wordpress
