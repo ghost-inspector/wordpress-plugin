@@ -47,6 +47,15 @@ jobs:
                 --admin_password=admin \
                 --admin_email=foo@bar.com
       - run:
+          name: Install Relative URL Plugin
+          command: |
+            docker run -it --rm \
+              --volumes-from wp-container \
+              --user xfs \
+              --network wp-network \
+              wordpress:cli plugin install relative-url \
+                --activate \
+      - run:
           name: Install Ghost Inspector plugin
           command: |
             docker run -it --rm \
@@ -55,7 +64,6 @@ jobs:
               --network wp-network \
               wordpress:cli plugin install ghost-inspector \
                 --activate \
-                --url=localhost
       - run:
           name: execute Ghost Inspector test(s)
           command: |
