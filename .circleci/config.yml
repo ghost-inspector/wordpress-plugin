@@ -24,7 +24,7 @@ jobs:
               --network wp-network \
               mysql:5.7
       - run:
-          name: Start WordPress
+          name: Setup WordPress
           command: |
             docker run -d \
               -e WORDPRESS_DB_HOST=db:3306 \
