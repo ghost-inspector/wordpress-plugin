@@ -8,6 +8,9 @@ jobs:
   test_plugin:
     executor: docker-executor
     steps:
+      - run:
+          name: "Fix CIRCLE_WORKING_DIRECTORY"
+          command: echo 'CIRCLE_WORKING_DIRECTORY="${CIRCLE_WORKING_DIRECTORY/#\~/$HOME}"' >> $BASH_ENV
       - checkout
       - run:
           name: build plugin
@@ -67,7 +70,7 @@ jobs:
           command: |
             docker run -it --rm \
               --volumes-from wp-container \
-              --volume /home/circleci/project:/tmp \
+              --volume $CIRCLE_WORKING_DIRECTORY:/tmp \
               --user xfs \
               --network wp-network \
               wordpress:cli plugin install /tmp/ghost-inspector.zip \
