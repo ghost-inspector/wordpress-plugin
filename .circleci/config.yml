@@ -8,9 +8,6 @@ jobs:
   test_plugin:
     executor: docker-executor
     steps:
-      - run:
-          name: "Fix CIRCLE_WORKING_DIRECTORY"
-          command: echo 'CIRCLE_WORKING_DIRECTORY="${CIRCLE_WORKING_DIRECTORY/#\~/$HOME}"' >> $BASH_ENV
       - checkout
       - run:
           name: build plugin
