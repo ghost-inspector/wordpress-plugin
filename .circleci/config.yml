@@ -62,18 +62,17 @@ jobs:
               --network wp-network \
               wordpress:cli plugin install relative-url \
                 --activate \
-      # - run:
-      #     name: copy Ghost Inspector plugin
-      #     command: docker cp ghost-inspector.zip wp-container:/tmp
+      - run:
+          name: copy Ghost Inspector plugin
+          command: docker cp ghost-inspector.zip wp-container:/var/www/html
       - run:
           name: Install Ghost Inspector plugin
           command: |
             docker run -it --rm \
               --volumes-from wp-container \
-              --volume $CIRCLE_WORKING_DIRECTORY:/tmp \
               --user xfs \
               --network wp-network \
-              wordpress:cli plugin install /tmp/ghost-inspector.zip \
+              wordpress:cli plugin install /var/www/html/ghost-inspector.zip \
                 --activate
       - run:
           name: execute Ghost Inspector test(s)
