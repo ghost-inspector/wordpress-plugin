@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run:
           name: build plugin
-          command: cd frontend && npm run export
+          command: cd frontend && npm install && npm run export
       - setup_remote_docker
       - run:
           name: Set up network
