@@ -8,8 +8,11 @@ jobs:
   test_plugin:
     executor: docker-executor
     steps:
-      - setup_remote_docker
       - checkout
+      - run:
+          name: build plugin
+          command: cd frontend && npm run export
+      - setup_remote_docker
       - run:
           name: Set up network
           command: |
@@ -56,15 +59,19 @@ jobs:
               --network wp-network \
               wordpress:cli plugin install relative-url \
                 --activate \
+      # - run:
+      #     name: copy Ghost Inspector plugin
+      #     command: docker cp ghost-inspector.zip wp-container:/tmp
       - run:
           name: Install Ghost Inspector plugin
           command: |
             docker run -it --rm \
               --volumes-from wp-container \
+              --volume $CIRCLE_WORKING_DIRECTORY:/tmp
               --user xfs \
               --network wp-network \
-              wordpress:cli plugin install ghost-inspector \
-                --activate \
+              wordpress:cli plugin install /tmp/ghost-inspector.zip \
+                --activate
       - run:
           name: execute Ghost Inspector test(s)
           command: |
