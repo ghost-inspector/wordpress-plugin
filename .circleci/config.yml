@@ -2,7 +2,7 @@ version: 2.1
 executors:
   docker-executor:
     docker: 
-      - image: docker:17.05.0-ce-git
+      - image: circleci/node
 
 jobs:
   test_plugin:
