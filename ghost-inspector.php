@@ -3,7 +3,7 @@
  * Plugin Name: Ghost Inspector
  * Plugin URI: http://wordpress.org/plugins/ghost-inspector
  * Description: Display the latest test results of a single suite on your dashboard. To get started: sign up for an account on <a href="http://ghostinspector.com">ghostinspector.com</a> and add your API key and your suite ID to your Ghost Inspector settings here in Wordpress. Build or record automated website tests in your browser with Ghost Inspector. We run them continuously from the cloud, monitoring your website for issues.
- * Version: 1.0.1
+ * Version: 1.0.0
  * Author: Ghost Inspector
  * Author URI: https://ghostinspector.com
  * Text Domain: ghost-inspector
