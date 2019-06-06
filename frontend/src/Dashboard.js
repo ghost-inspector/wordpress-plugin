@@ -16,22 +16,6 @@ const Dashboard = ({ suiteId, executeEnabled }) => {
   const [suite, setSuite] = useState({})
   const [isSuiteRunning, setSuiteRunning] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-  const fetchTests = async () => {
-    try {
-      const tests = await getSuiteTests(suiteId)
-      setTests(tests)
-    } catch (error) {
-      setErrorMessage(<ErrorMessage message={error.message} />)
-    }
-  }
-  const fetchSuite = async () => {
-    try {
-      const suite = await getSuite(suiteId)
-      setSuite(suite)
-    } catch (error) {
-      setErrorMessage(<ErrorMessage message={error.message} />)
-    }
-  }
   const triggerExecuteSuite = async () => {
     setSuiteRunning(true)
     const suite = await executeSuite(suiteId)
@@ -40,13 +24,29 @@ const Dashboard = ({ suiteId, executeEnabled }) => {
     return suiteResults
   }
   useEffect(() => {
+    const fetchTests = async () => {
+      try {
+        const tests = await getSuiteTests(suiteId)
+        setTests(tests)
+      } catch (error) {
+        setErrorMessage(<ErrorMessage message={error.message} />)
+      }
+    }
+    const fetchSuite = async () => {
+      try {
+        const suite = await getSuite(suiteId)
+        setSuite(suite)
+      } catch (error) {
+        setErrorMessage(<ErrorMessage message={error.message} />)
+      }
+    }
     if (suiteId) {
       fetchTests()
       fetchSuite()
     } else {
       setErrorMessage(<ErrorMessage message={'Could not find your suite ID.'} />)
     }
-  }, [])
+  }, [suiteId, setErrorMessage])
   if (errorMessage) {
     return <div>{errorMessage}</div>
   }

@@ -32,30 +32,30 @@ const Settings = ({ nonce, urls }) => {
     }
     setSaving(false)
   }
-  const getSettings = async () => {
-    let json = null
-    let elapsed = false
-    setGetting(true)
-    // display loading for a minimum amount of time to prevent flashing
-    setTimeout(() => {
-      elapsed = true
-      if (json) {
+  useEffect(() => {
+    const getSettings = async () => {
+      let json = null
+      let elapsed = false
+      setGetting(true)
+      // display loading for a minimum amount of time to prevent flashing
+      setTimeout(() => {
+        elapsed = true
+        if (json) {
+          setGetting(false)
+        }
+      }, 300)
+      const response = await fetch(urls.settings, {
+        headers: new Headers({ 'X-WP-Nonce': nonce })
+      })
+      json = await response.json()
+      setApiKey(json.value.apiKey)
+      setSuiteId(json.value.suiteId)
+      if (elapsed) {
         setGetting(false)
       }
-    }, 300)
-    const response = await fetch(urls.settings, {
-      headers: new Headers({ 'X-WP-Nonce': nonce })
-    })
-    json = await response.json()
-    setApiKey(json.value.apiKey)
-    setSuiteId(json.value.suiteId)
-    if (elapsed) {
-      setGetting(false)
     }
-  }
-  useEffect(() => {
     getSettings()
-  }, [])
+  }, [nonce, urls])
   if (isGetting) {
     return <p>Loading...</p>
   }
