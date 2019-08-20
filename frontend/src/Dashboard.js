@@ -71,7 +71,7 @@ const Dashboard = ({ suiteId, executeEnabled }) => {
               </td>
               <td className="ghost_inspector_status">
                 <span className={`dashicons dashicons-${test.passing ? 'yes' : 'no'}`}></span>
-                {format(new Date(test.dateExecutionFinished), 'MMM D')}
+                {format(new Date(test.dateExecutionFinished), 'MMM d')}
               </td>
             </tr>
           ))}
