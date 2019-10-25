@@ -1,12 +1,12 @@
 {
   "name": "wordpress-plugin",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "dependencies": {
-    "date-fns": "^2.0.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-scripts": "^3.1.1"
+    "date-fns": "^2.6.0",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-scripts": "^3.2.0"
   },
   "devDependencies": {
     "archiver": "^3.1.1",
