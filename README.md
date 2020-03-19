@@ -22,16 +22,20 @@ npm install
 npm start
 ```
 
-Note: In the plugin code (PHP) it will look for `$_SERVER['REMOTE_ADDR']` equal to '10.255.0.2' or '::1'. You may need to modify that to use your Docker (or M/W/LAMP setup) IP address. It also expects the React server to be on port 3000.
+Note: The [plugin code](https://github.com/ghost-inspector/wordpress-plugin/blob/master/ghost-inspector.php) (PHP) looks for `$_SERVER['REMOTE_ADDR']` equal to '10.255.0.2' or '::1' to detect if WordPress is running locally. You may need to modify that to use your Docker (or M/W/LAMP setup) IP address. In local mode, it expects the Ghost Inspector API to be running on localhost:5021 and the React app in this repo to be on localhost:3000.
 
 Note: Both the development and production build expect a single `.js` and a single `.css` file. Create React App has code splitting enabled by default, so there are two scripts which override the Webpack config.
 
 ## Manually Installing Plugin
 
-To get a `.zip` file for [manual plugin installation](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation_by_Uploading_a_Zip_Archive), run:
+To get a `.zip` file for [manual plugin installation](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation_by_Uploading_a_Zip_Archive), run (from /frontend):
 ```shell
 npm run export
 ```
+
+## Testing With Unreleased WordPress
+
+Install the [WordPress Beta Tester](https://wordpress.org/plugins/wordpress-beta-tester/) plugin to update your version of WordPress running in Docker to a nightly or bleeding edge build.
 
 ## Usage
 
