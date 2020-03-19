@@ -12,14 +12,24 @@
  * Ghost Inspector is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or any later version. Ghost Inspector is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with Ghost Inspector. If not, see https://www.gnu.org/licenses/gpl-3.0.txt.
 */
 
+function is_local_dev() {
+  if (in_array($_SERVER['REMOTE_ADDR'], array('10.255.0.2', '::1'))) {
+    return true;
+  }
+}
+
 // proxy requests to the GI API so that the API key remains hidden
 function ghost_inspector_api_proxy($request) {
+  $baseurl = 'https://api.ghostinspector.com';
+  if (is_local_dev()) {
+    $baseurl = 'http://host.docker.internal:5021';
+  }
   $params = $request->get_query_params();
   $params['apiKey'] = get_option('ghost_inspector_api_key');
   $endpoint = $params['endpoint'];
   unset($params['endpoint']);
   $query = http_build_query($params);
-  $request = wp_remote_get("https://api.ghostinspector.com/v1$endpoint?$query");
+  $request = wp_remote_get("$baseurl/v1$endpoint?$query");
   return json_decode(wp_remote_retrieve_body($request));
 }
 
@@ -84,7 +94,7 @@ add_action('admin_enqueue_scripts', function ($hook) {
     return;
   }
 
-  if (in_array($_SERVER['REMOTE_ADDR'], array('10.255.0.2', '::1'))) {
+  if (is_local_dev()) {
     // DEV React dynamic loading
     $js_to_load = 'http://localhost:3000/static/js/bundle.js';
   } else {
