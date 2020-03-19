@@ -3,14 +3,14 @@
   "version": "1.0.2",
   "private": true,
   "dependencies": {
-    "date-fns": "^2.6.0",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
-    "react-scripts": "^3.2.0"
+    "date-fns": "^2.11.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-scripts": "^3.4.0"
   },
   "devDependencies": {
     "archiver": "^3.1.1",
-    "rewire": "^4.0.1"
+    "rewire": "^5.0.0"
   },
   "scripts": {
     "start": "node ./scripts/start-non-split.js",
