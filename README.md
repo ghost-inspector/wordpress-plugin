@@ -40,3 +40,12 @@ Install the [WordPress Beta Tester](https://wordpress.org/plugins/wordpress-beta
 ## Usage
 
 You can install manually using the instructions above. Download the latest version from the [WordPress.org plugin directory](https://wordpress.org/plugins/ghost-inspector/). Or you can install from your WordPress admin by searching for the plugin "ghost inspector". In either case, follow [these instructions](https://ghostinspector.com/blog/ghost-inspector-wordpress-plugin/) to install and setup the plugin.
+
+## How to Release
+
+1. Update version in package.json, readme.txt, and ghost-inspector.php
+2. Add an entry to changelog in readme.txt
+3. Merge to master in git
+4. Prepare a release by running `npm run export` from `/frontend`. Unzip the contents into the SVN trunk directory (overwriting the existing files).
+5. [Commit the changes to SVN](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files)
+6. [Tag a new version](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#tagging-new-versions)
