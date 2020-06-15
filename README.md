@@ -22,7 +22,7 @@ npm install
 npm start
 ```
 
-Note: The [plugin code](https://github.com/ghost-inspector/wordpress-plugin/blob/master/ghost-inspector.php) (PHP) looks for `$_SERVER['REMOTE_ADDR']` equal to '10.255.0.2' or '::1' to detect if WordPress is running locally. You may need to modify that to use your Docker (or M/W/LAMP setup) IP address. In local mode, it expects the Ghost Inspector API to be running on localhost:5021 and the React app in this repo to be on localhost:3000.
+Note: The [plugin code](https://github.com/ghost-inspector/wordpress-plugin/blob/stable/ghost-inspector.php) (PHP) looks for `$_SERVER['REMOTE_ADDR']` equal to '10.255.0.2' or '::1' to detect if WordPress is running locally. You may need to modify that to use your Docker (or M/W/LAMP setup) IP address. In local mode, it expects the Ghost Inspector API to be running on localhost:5021 and the React app in this repo to be on localhost:3000.
 
 Note: Both the development and production build expect a single `.js` and a single `.css` file. Create React App has code splitting enabled by default, so there are two scripts which override the Webpack config.
 
@@ -45,7 +45,7 @@ You can install manually using the instructions above. Download the latest versi
 
 1. Update version in package.json, readme.txt, and ghost-inspector.php
 2. Add an entry to changelog in readme.txt
-3. Merge to master in git
+3. Merge to `stable` in git
 4. Prepare a release by running `npm run export` from `/frontend`. Unzip the contents into the SVN trunk directory (overwriting the existing files).
 5. [Commit the changes to SVN](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files)
 6. [Tag a new version](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#tagging-new-versions)
