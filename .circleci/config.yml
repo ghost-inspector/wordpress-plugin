@@ -57,7 +57,7 @@ jobs:
               --volumes-from wp-container \
               --user xfs \
               --network wp-network \
-              wordpress:cli plugin install relative-url \
+              wordpress:cli-2.3.0 plugin install relative-url \
                 --activate \
       - run:
           name: copy Ghost Inspector plugin
