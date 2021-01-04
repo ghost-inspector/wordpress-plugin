@@ -4,9 +4,9 @@
 
 ### Quick Start
 
-If you want to run this locally, I've included a Docker stack config for Wordpress + MySQL completely configured. Start it with:
+If you want to run this locally, I've included a docker-compose config for Wordpress + MySQL completely configured. Start it with:
 ```
-docker stack deploy -c stack.yml wordpress
+docker-compose up
 ```
 
 It will help speed up development to either mount the Docker Wordpress container so you can directly modify the files, or use this command/path to copy the files after saving (adjust for your local path, container ID):
