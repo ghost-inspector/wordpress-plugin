@@ -44,7 +44,7 @@ jobs:
             docker run -it --rm \
               --volumes-from wp-container \
               --network wp-network \
-              wordpress:cli core install \
+              wordpress:cli-2.3.0 core install \
                 --url=localhost \
                 --title=test \
                 --admin_user=admin \
