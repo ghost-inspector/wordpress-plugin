@@ -38,8 +38,8 @@ archive.on('error', function(err) {
 // pipe archive data to the file
 archive.pipe(output);
 
-archive.glob('../frontend/build/static/js/main.*.js', null, { name: 'ghost-inspector.js', prefix });
-archive.glob('../frontend/build/static/css/main.*.css', null, { name: 'ghost-inspector.css', prefix });
+archive.glob('main.*.js', { cwd: '../frontend/build/static/js/'}, { name: 'ghost-inspector.js', prefix });
+archive.glob('main.*.css', { cwd: '../frontend/build/static/css/' }, { name: 'ghost-inspector.css', prefix });
 archive.file(path.resolve(__dirname, '../../ghost-inspector.php'), { name: 'ghost-inspector.php', prefix });
 archive.file(path.resolve(__dirname, '../../README.txt'), { name: 'README.txt', prefix });
 archive.file(path.resolve(__dirname, '../../LICENSE.txt'), { name: 'LICENSE.txt', prefix });
