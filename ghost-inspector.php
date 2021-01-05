@@ -13,7 +13,7 @@
 */
 
 function is_local_dev() {
-  if (in_array($_SERVER['REMOTE_ADDR'], array('10.255.0.2', '::1'))) {
+  if (in_array($_SERVER['REMOTE_ADDR'], array('10.255.0.2', '172.18.0.1', '::1'))) {
     return true;
   }
 }
