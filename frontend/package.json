@@ -10,12 +10,14 @@
   },
   "devDependencies": {
     "archiver": "^5.1.0",
-    "rewire": "^5.0.0"
+    "rewire": "^5.0.0",
+    "unzipper": "^0.10.11"
   },
   "scripts": {
     "start": "node ./scripts/start-non-split.js",
     "build": "node ./scripts/build-non-split.js",
     "preexport": "npm run build",
+    "postexport": "node ./scripts//verify-export.js",
     "export": "node ./scripts/export.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
