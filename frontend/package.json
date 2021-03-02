@@ -3,19 +3,21 @@
   "version": "1.0.3",
   "private": true,
   "dependencies": {
-    "date-fns": "^2.11.0",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
-    "react-scripts": "^3.4.0"
+    "date-fns": "^2.16.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "^4.0.1"
   },
   "devDependencies": {
     "archiver": "^3.1.1",
-    "rewire": "^5.0.0"
+    "rewire": "^5.0.0",
+    "unzipper": "^0.10.11"
   },
   "scripts": {
     "start": "node ./scripts/start-non-split.js",
     "build": "node ./scripts/build-non-split.js",
     "preexport": "npm run build",
+    "postexport": "node ./scripts//verify-export.js",
     "export": "node ./scripts/export.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
