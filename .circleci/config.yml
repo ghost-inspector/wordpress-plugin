@@ -7,11 +7,6 @@ executors:
 jobs:
   test_plugin:
     executor: docker-executor
-    environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: 1234
-      WORDPRESS_DB_NAME: wordpress
     steps:
       - checkout
       - run:
@@ -35,6 +30,10 @@ jobs:
           name: Setup WordPress
           command: |
             docker run -d \
+              -e WORDPRESS_DB_HOST=db:3306 \
+              -e WORDPRESS_DB_USER=root \
+              -e WORDPRESS_DB_PASSWORD=1234 \
+              -e WORDPRESS_DB_NAME=wordpress \
               -e WORDPRESS_CONFIG_EXTRA="define('WP_SITEURL', 'http://' . \$_SERVER['HTTP_HOST']); define('WP_HOME', 'http://' . \$_SERVER['HTTP_HOST']);" \
               --name wp-container \
               --network wp-network \
@@ -45,6 +44,10 @@ jobs:
             docker run -it --rm \
               --volumes-from wp-container \
               --network wp-network \
+              -e WORDPRESS_DB_HOST=db:3306 \
+              -e WORDPRESS_DB_USER=root \
+              -e WORDPRESS_DB_PASSWORD=1234 \
+              -e WORDPRESS_DB_NAME=wordpress \
               wordpress:cli-2.3.0 core install \
                 --url=localhost \
                 --title=test \
@@ -58,6 +61,10 @@ jobs:
               --volumes-from wp-container \
               --user xfs \
               --network wp-network \
+              -e WORDPRESS_DB_HOST=db:3306 \
+              -e WORDPRESS_DB_USER=root \
+              -e WORDPRESS_DB_PASSWORD=1234 \
+              -e WORDPRESS_DB_NAME=wordpress \
               wordpress:cli-2.4.0 plugin install relative-url \
                 --activate \
       - run:
@@ -70,6 +77,10 @@ jobs:
               --volumes-from wp-container \
               --user xfs \
               --network wp-network \
+              -e WORDPRESS_DB_HOST=db:3306 \
+              -e WORDPRESS_DB_USER=root \
+              -e WORDPRESS_DB_PASSWORD=1234 \
+              -e WORDPRESS_DB_NAME=wordpress \
               wordpress:cli plugin install /var/www/html/ghost-inspector.zip \
                 --activate
       - run:
