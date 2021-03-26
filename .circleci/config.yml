@@ -3,7 +3,8 @@ executors:
   docker-executor:
     docker: 
       - image: circleci/node
-
+orbs:
+  wait-for: cobli/wait-for@0.0.2
 jobs:
   test_plugin:
     executor: docker-executor
@@ -38,6 +39,7 @@ jobs:
               --name wp-container \
               --network wp-network \
               wordpress
+      - wait-for/mysql
       - run:
           name: Install WordPress
           command: |
