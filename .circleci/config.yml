@@ -3,6 +3,7 @@ executors:
   docker-executor:
     docker: 
       - image: circleci/node
+
 jobs:
   test_plugin:
     executor: docker-executor
@@ -38,14 +39,6 @@ jobs:
               --network wp-network \
               wordpress
       - run:
-          name: install dockerize
-          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-          environment:
-            DOCKERIZE_VERSION: v0.3.0
-      - run:
-          name: Wait for db
-          command: dockerize -wait tcp://db:3306 -timeout 1m
-      - run:
           name: Install WordPress
           command: |
             docker run -it --rm \
@@ -64,7 +57,7 @@ jobs:
               --volumes-from wp-container \
               --user xfs \
               --network wp-network \
-              wordpress:cli-2.3.0 plugin install relative-url \
+              wordpress:cli-2.4.0 plugin install relative-url \
                 --activate \
       - run:
           name: copy Ghost Inspector plugin
