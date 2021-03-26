@@ -44,6 +44,10 @@ jobs:
             docker run -it --rm \
               --volumes-from wp-container \
               --network wp-network \
+              -e WORDPRESS_DB_HOST=db:3306 \
+              -e WORDPRESS_DB_USER=root \
+              -e WORDPRESS_DB_PASSWORD=1234 \
+              -e WORDPRESS_DB_NAME=wordpress \
               wordpress:cli-2.3.0 core install \
                 --url=localhost \
                 --title=test \
