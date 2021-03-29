@@ -44,6 +44,10 @@ jobs:
             docker run -it --rm \
               --volumes-from wp-container \
               --network wp-network \
+              -e WORDPRESS_DB_HOST=db:3306 \
+              -e WORDPRESS_DB_USER=root \
+              -e WORDPRESS_DB_PASSWORD=1234 \
+              -e WORDPRESS_DB_NAME=wordpress \
               wordpress:cli-2.3.0 core install \
                 --url=localhost \
                 --title=test \
@@ -57,7 +61,11 @@ jobs:
               --volumes-from wp-container \
               --user xfs \
               --network wp-network \
-              wordpress:cli-2.3.0 plugin install relative-url \
+              -e WORDPRESS_DB_HOST=db:3306 \
+              -e WORDPRESS_DB_USER=root \
+              -e WORDPRESS_DB_PASSWORD=1234 \
+              -e WORDPRESS_DB_NAME=wordpress \
+              wordpress:cli-2.4.0 plugin install relative-url \
                 --activate \
       - run:
           name: copy Ghost Inspector plugin
@@ -69,6 +77,10 @@ jobs:
               --volumes-from wp-container \
               --user xfs \
               --network wp-network \
+              -e WORDPRESS_DB_HOST=db:3306 \
+              -e WORDPRESS_DB_USER=root \
+              -e WORDPRESS_DB_PASSWORD=1234 \
+              -e WORDPRESS_DB_NAME=wordpress \
               wordpress:cli plugin install /var/www/html/ghost-inspector.zip \
                 --activate
       - run:
