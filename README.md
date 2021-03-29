@@ -49,3 +49,8 @@ You can install manually using the instructions above. Download the latest versi
 4. Prepare a release by running `npm run export` from `/frontend`. Unzip the contents into the SVN trunk directory (overwriting the existing files).
 5. [Commit the changes to SVN](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files)
 6. [Tag a new version](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#tagging-new-versions)
+
+### Updating Logo
+
+1. Update logo(s) in `assets` folder
+2. Copy to SVN - [follow instructions for updating](https://developer.wordpress.org/plugins/wordpress-org/plugin-assets/)
