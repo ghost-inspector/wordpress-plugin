@@ -93,6 +93,7 @@ jobs:
               --errorOnFail \
               --ngrokTunnel=wp-container:80 \
               --ngrokToken=$NGROK_TOKEN \
+              --ngrokUrlVariable startUrl \
               --apiKey=$GI_API_KEY \
               --wp_username=admin \
               --wp_password=admin \
