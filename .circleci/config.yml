@@ -87,14 +87,15 @@ jobs:
           name: execute Ghost Inspector test(s)
           command: |
             docker run \
-              -e APP_PORT=wp-container:80 \
-              -e GI_API_KEY=$GI_API_KEY \
-              -e GI_SUITE=$GI_SUITE \
-              -e NGROK_TOKEN=$NGROK_TOKEN \
-              -e GI_PARAM_wp_username=admin \
-              -e GI_PARAM_wp_password=admin \
               --network wp-network \
-              ghostinspector/test-runner-standalone
+              ghostinspector/cli \
+              suite execute $GI_SUITE \
+              --ngrokTunnel=wp-container:80 \
+              --ngrokToken=$NGROK_TOKEN \
+              --apiKey=$GI_API_KEY \
+              --wp_username=admin \
+              --wp_password=admin \
+              --wp_plugin_api_key=$GI_API_KEY
 
 workflows:
   test:
