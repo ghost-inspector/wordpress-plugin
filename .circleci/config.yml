@@ -10,15 +10,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: build plugin
+          name: Build plugin
           command: cd frontend && npm install && npm run export
       - setup_remote_docker
       - run:
-          name: Set up network
+          name: Setup network
           command: |
             docker network create wp-network
       - run:
-          name: Set up database
+          name: Setup database
           command: |
             docker run -d \
               -e MYSQL_ROOT_PASSWORD=1234 \
@@ -68,7 +68,7 @@ jobs:
               wordpress:cli-2.4.0 plugin install relative-url \
                 --activate \
       - run:
-          name: copy Ghost Inspector plugin
+          name: Copy Ghost Inspector plugin
           command: docker cp ghost-inspector.zip wp-container:/var/www/html
       - run:
           name: Install Ghost Inspector plugin
@@ -84,7 +84,7 @@ jobs:
               wordpress:cli plugin install /var/www/html/ghost-inspector.zip \
                 --activate
       - run:
-          name: execute Ghost Inspector test(s)
+          name: Execute Ghost Inspector test(s)
           command: |
             docker run \
               --network wp-network \
