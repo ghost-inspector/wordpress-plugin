@@ -90,6 +90,7 @@ jobs:
               --network wp-network \
               ghostinspector/cli \
               suite execute $GI_SUITE \
+              --errorOnFail \
               --ngrokTunnel=wp-container:80 \
               --ngrokToken=$NGROK_TOKEN \
               --apiKey=$GI_API_KEY \
