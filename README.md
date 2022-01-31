@@ -48,6 +48,9 @@ You can install manually using the instructions above. Download the latest versi
 3. Merge to `stable` in git
 4. Prepare a release by running `npm run export` from `/frontend`. Unzip the contents into the SVN trunk directory (overwriting the existing files).
 5. [Commit the changes to SVN](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files)
+  - You will need to install `svn`. On MacOS, this can be done with `brew install svn`
+  - The repository is located at https://plugins.svn.wordpress.org/ghost-inspector/
+  - The account with permissions is in the Engineering 1Password vault. It's username `ghostinspector` (with email address `tech@ghostinspector.com`)
 6. [Tag a new version](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#tagging-new-versions)
 
 ### Updating Logo
